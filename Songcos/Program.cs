@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Net;
+using System.IO;
 
 namespace Songcos
 {
@@ -72,16 +73,42 @@ namespace Songcos
             {
                 int CorrectNumber = 0;
                 int CorrectPosition = 0;
+                bool Error = true;
 
-                Console.WriteLine($"Attempts Left: {Attempts}");
+                while (Error)
+                {
+                    Console.WriteLine($"Attempts Left: {Attempts}");
+                    Console.WriteLine();
+                    Console.Write("Enter Number: ");
+
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Answer = Console.ReadLine();
+                    Console.ResetColor();
+
+                    bool isValid = Answer.Length > 0;
+
+                    for (int i = 0; i < Answer.Length; i++)
+                    {
+                        int individualNum = Answer[i] - '0';
+
+                        if (individualNum < 1 || individualNum > 6)
+                        {
+                            Error = false;
+                        }
+                    }
+
+                    if (isValid)
+                    {
+                        Error = false;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Only Input (1 - 6), Try Again!");
+                        Thread.Sleep(1000);
+                    }
+                }
+
                 Console.WriteLine();
-                Console.Write("Enter Number: ");
-
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Answer = Console.ReadLine();
-                Console.ResetColor();
-                Console.WriteLine();
-
                 (CorrectPosition, CorrectNumber) = Validation(CorrectPosition, CorrectNumber);
 
                 Console.WriteLine($"Correct Number: {CorrectNumber}");
